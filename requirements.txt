@@ -1,4 +1,5 @@
-# requirements.txt - list all the packages the project needs
+# #updated
+#requirements.txt - list all the packages the project needs
 #
 # In this file, ignore hashes (#) - they are just used to create comments.
 # Lines starting with a hash are ignored when installing packages using this file. 
