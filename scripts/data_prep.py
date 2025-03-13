@@ -1,6 +1,6 @@
 """
 Module 2: Initial Script to Verify Project Setup
-File: scripts/data_prep.py
+change File: scripts/data_prep.py
 """
 
 import pathlib
