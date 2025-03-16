@@ -1,7 +1,3 @@
-"""
-Module 2: Initial Script to Verify Project Setup
-change File: scripts/data_prep.py
-"""
 
 import pathlib
 import sys
@@ -18,6 +14,8 @@ from utils.logger import logger
 # Constants
 DATA_DIR: pathlib.Path = PROJECT_ROOT.joinpath("data")
 RAW_DATA_DIR: pathlib.Path = DATA_DIR.joinpath("raw")
+CLEANED_DATA_DIR: pathlib.Path = DATA_DIR.joinpath("cleaned")
+CLEANED_DATA_DIR.mkdir(parents=True, exist_ok=True)  # Ensure the cleaned data directory exists
 
 def read_raw_data(file_name: str) -> pd.DataFrame:
     """Read raw data from CSV."""
