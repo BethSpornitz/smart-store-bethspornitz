@@ -4,7 +4,6 @@ from scipy import stats
 import logging
 from pathlib import Path
 
-
 # Setup for logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -49,7 +48,7 @@ EXPECTED_DTYPES = {
 
 # Define file paths
 RAW_DATA_DIR = Path("data/raw")
-CLEANED_DATA_DIR = Path("data/cleaned")
+PREPARED_DATA_DIR = Path("data/prepared")
 REPORT_DIR = Path("data/reports")
 
 def standardize_column_names(df, standardization_map):
@@ -111,6 +110,10 @@ def process_data(filename):
     df = pd.read_csv(RAW_DATA_DIR / filename, na_values=["", "N/A", "NULL"])
     change_log = []
 
+    # Log number of raw records
+    raw_records_count = len(df)
+    logger.info(f"Raw records count for {filename}: {raw_records_count}")
+
     # Identify file type and required columns
     if filename == "customers_data.csv":
         required_columns = ["Customer_ID", "Customer_Name", "Customer_Region", "Customer_Join_Date", "Customer_Lifetime_Value"]
@@ -137,18 +140,24 @@ def process_data(filename):
     # Clean data
     df_cleaned = clean_data(df, required_columns, change_log)
 
+    # Log the number of cleaned rows
+    cleaned_records_count = len(df_cleaned)
+    logger.info(f"Cleaned records count for {filename}: {cleaned_records_count}")
+
     # Handle outliers if applicable
     if "Quantity_Sold" in df_cleaned.columns:
         df_cleaned = handle_outliers_zscore(df_cleaned, "Quantity_Sold", threshold=3, change_log=change_log)
 
     # Ensure the output directories exist
-    CLEANED_DATA_DIR.mkdir(parents=True, exist_ok=True)
+    PREPARED_DATA_DIR.mkdir(parents=True, exist_ok=True)
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Save cleaned data to file
-    cleaned_filename = CLEANED_DATA_DIR / f"cleaned_{filename}"
-    df_cleaned.to_csv(cleaned_filename, index=False)
-    logger.info(f"Cleaned data saved to {cleaned_filename}")
+    # Generate the "prepared" filename and path
+    prepared_filename = PREPARED_DATA_DIR / f"prepared_{Path(filename).name}"
+
+    # Save the prepared data to the new path
+    df_cleaned.to_csv(prepared_filename, index=False)
+    logger.info(f"Prepared data saved to {prepared_filename}")
 
     # Create a summary report of changes
     if change_log:
