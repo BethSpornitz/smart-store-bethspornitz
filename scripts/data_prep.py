@@ -1,4 +1,3 @@
-
 import pathlib
 import sys
 import pandas as pd
@@ -57,36 +56,23 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     # Standardize column names
     df.rename(columns=COLUMN_STANDARDIZATION, inplace=True)
     
-    # Remove rows with incorrect number of entries
-    df.dropna(how="all", inplace=True)  # Drop entirely empty rows
-    
-    # Remove duplicates
+    # Drop rows with any missing values in any column
+    initial_size = len(df)
+    df.dropna(how='any', inplace=True)
+    logger.info(f"Dropped {initial_size - len(df)} rows with missing values.")
+
+    # Drop fully duplicate rows
     initial_size = len(df)
     df.drop_duplicates(inplace=True)
-    logger.info(f"Removed {initial_size - len(df)} duplicate rows.")
+    logger.info(f"Dropped {initial_size - len(df)} fully duplicate rows.")
 
-    # Handle missing, bad, or out-of-range values
-    for column in df.columns:
-        if column in EXPECTED_DTYPES:
-            dtype = EXPECTED_DTYPES[column]
-            if dtype.startswith("float") or dtype.startswith("int"):
-                df[column] = pd.to_numeric(df[column], errors="coerce")  # Convert, set bad values to NaN
-                df.dropna(subset=[column], inplace=True)  # Drop rows with NaN in key numerical columns
-            elif dtype == "datetime64":
-                df[column] = pd.to_datetime(df[column], errors="coerce")  # Convert, set bad dates to NaT
-                df.dropna(subset=[column], inplace=True)  # Drop rows with invalid dates
-
-    # Ensure correct data types
+    # Ensure correct data types for the relevant columns
     for column, dtype in EXPECTED_DTYPES.items():
         if column in df.columns:
             df[column] = df[column].astype(dtype)
 
     logger.info("Data cleaning complete.")
     return df
-
-def process_data(file_name: str) -> None:
-    """Process raw data by reading it into a pandas DataFrame object."""
-    df = read_raw_data(file_name)
 
 def process_data(file_name: str) -> None:
     """Process raw data by reading it, cleaning it, and saving the cleaned version."""
