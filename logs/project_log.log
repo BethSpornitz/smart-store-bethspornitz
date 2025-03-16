@@ -4,3 +4,18 @@
 2025-03-12 21:07:53.601 | INFO     | __main__:read_raw_data:26 - Reading raw data from C:\Users\beths\Documents\Northwest_Missouri_Analytics\BI_Analytics\smart-store-bethspornitz\data\raw\products_data.csv.
 2025-03-12 21:07:53.607 | INFO     | __main__:read_raw_data:26 - Reading raw data from C:\Users\beths\Documents\Northwest_Missouri_Analytics\BI_Analytics\smart-store-bethspornitz\data\raw\sales_data.csv.
 2025-03-12 21:07:53.616 | INFO     | __main__:main:45 - Data preparation complete.
+2025-03-16 13:59:15.737 | INFO     | utils.logger:<module>:39 - Logging to file: logs\project_log.log
+2025-03-16 13:59:15.739 | INFO     | __main__:main:103 - Starting data preparation...
+2025-03-16 13:59:15.740 | INFO     | __main__:read_raw_data:40 - Reading raw data from C:\Users\beths\Documents\Northwest_Missouri_Analytics\BI_Analytics\smart-store-bethspornitz\data\raw\customers_data.csv.
+2025-03-16 13:59:15.791 | INFO     | __main__:clean_data:66 - Removed 0 duplicate rows.
+2025-03-16 13:59:15.798 | INFO     | __main__:clean_data:84 - Data cleaning complete.
+2025-03-16 13:59:15.808 | INFO     | __main__:process_data:99 - Cleaned data saved to C:\Users\beths\Documents\Northwest_Missouri_Analytics\BI_Analytics\smart-store-bethspornitz\data\cleaned\customers_data.csv.
+2025-03-16 13:59:15.814 | INFO     | __main__:read_raw_data:40 - Reading raw data from C:\Users\beths\Documents\Northwest_Missouri_Analytics\BI_Analytics\smart-store-bethspornitz\data\raw\products_data.csv.
+2025-03-16 13:59:15.855 | INFO     | __main__:clean_data:66 - Removed 0 duplicate rows.
+2025-03-16 13:59:15.857 | INFO     | __main__:clean_data:84 - Data cleaning complete.
+2025-03-16 13:59:15.865 | INFO     | __main__:process_data:99 - Cleaned data saved to C:\Users\beths\Documents\Northwest_Missouri_Analytics\BI_Analytics\smart-store-bethspornitz\data\cleaned\products_data.csv.
+2025-03-16 13:59:15.876 | INFO     | __main__:read_raw_data:40 - Reading raw data from C:\Users\beths\Documents\Northwest_Missouri_Analytics\BI_Analytics\smart-store-bethspornitz\data\raw\sales_data.csv.
+2025-03-16 13:59:15.926 | INFO     | __main__:clean_data:66 - Removed 0 duplicate rows.
+2025-03-16 13:59:15.927 | INFO     | __main__:clean_data:84 - Data cleaning complete.
+2025-03-16 13:59:15.934 | INFO     | __main__:process_data:99 - Cleaned data saved to C:\Users\beths\Documents\Northwest_Missouri_Analytics\BI_Analytics\smart-store-bethspornitz\data\cleaned\sales_data.csv.
+2025-03-16 13:59:15.941 | INFO     | __main__:main:107 - Data preparation complete.

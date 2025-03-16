@@ -88,6 +88,16 @@ def process_data(file_name: str) -> None:
     """Process raw data by reading it into a pandas DataFrame object."""
     df = read_raw_data(file_name)
 
+def process_data(file_name: str) -> None:
+    """Process raw data by reading it, cleaning it, and saving the cleaned version."""
+    df = read_raw_data(file_name)
+    df_cleaned = clean_data(df)
+
+    # Save cleaned data
+    cleaned_file_path = CLEANED_DATA_DIR.joinpath(file_name)
+    df_cleaned.to_csv(cleaned_file_path, index=False)
+    logger.info(f"Cleaned data saved to {cleaned_file_path}.")
+
 def main() -> None:
     """Main function for processing customer, product, and sales data."""
     logger.info("Starting data preparation...")
