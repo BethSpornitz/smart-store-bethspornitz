@@ -1,4 +1,4 @@
-CustomerID,Name,Region,JoinDate,LifetimeValue,CustomerTier
+Customer_ID,Customer_Name,Customer_Region,Customer_Join_Date,Customer_Lifetime_Value,Customer_Tier
 1001,William White,East,11/11/2021,"5,000",Gold
 1002,Wylie Coyote,East,2/14/2023,"2,000",Silver
 1003,Dan Brown,West,10/19/2023,1000,Bronze

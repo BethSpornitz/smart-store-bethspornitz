@@ -1,4 +1,4 @@
-ProductID,ProductName,Category,UnitPrice,ManufacturingCcost,Brand
+Product_ID,Product_Name,Product_Category,Unit_Price_USD,Manufacturing_Cost_USD,Brand_Name
 101,laptop,Electronics,793.12,25,Gateway
 102,hoodie,Clothing,39.1,15,Nike
 103,cable,Electronics,22.76,10,HP
