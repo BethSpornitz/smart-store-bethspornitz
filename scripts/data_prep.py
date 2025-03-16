@@ -17,6 +17,22 @@ RAW_DATA_DIR: pathlib.Path = DATA_DIR.joinpath("raw")
 CLEANED_DATA_DIR: pathlib.Path = DATA_DIR.joinpath("cleaned")
 CLEANED_DATA_DIR.mkdir(parents=True, exist_ok=True)  # Ensure the cleaned data directory exists
 
+# Expected column names and their standardized versions
+COLUMN_STANDARDIZATION = {
+    "CustID": "Customer_ID",
+    "ProdID": "Product_ID",
+    "SaleAmt($)": "Sale_Amount_USD",
+    "Date": "Purchase_Date"
+}
+
+# Expected data types
+EXPECTED_DTYPES = {
+    "Customer_ID": "int64",
+    "Product_ID": "int64",
+    "Sale_Amount_USD": "float64",
+    "Purchase_Date": "datetime64"
+}
+
 def read_raw_data(file_name: str) -> pd.DataFrame:
     """Read raw data from CSV."""
     file_path: pathlib.Path = RAW_DATA_DIR.joinpath(file_name)
