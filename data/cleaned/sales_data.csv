@@ -1,4 +1,4 @@
-TransactionID,SaleDate,CustomerID,ProductID,StoreID,CampaignID,SaleAmount,QuantitySold,PaymentMethod,SalesChannel
+transactionid,saledate,customerid,productid,storeid,campaignid,saleamount,quantitysold,paymentmethod,saleschannel
 550,1/6/2024,1008,102,404,0,39.1,100000000,Cash,In Store
 551,1/6/2024,1009,105,403,0,19.78,1,Credit Card,Online
 552,1/16/2024,1004,107,404,0,335.1,1,PayPal,Phone
@@ -94,3 +94,4 @@ TransactionID,SaleDate,CustomerID,ProductID,StoreID,CampaignID,SaleAmount,Quanti
 642,10/10/2024,1002,101,402,0,5551.84,17,PayPal,Online
 643,10/10/2024,1010,104,402,0,301.7,100,PayPal,Phone
 644,10/10/2024,1010,104,402,0,305.0,100,0,Phone
+643,10/10/2024,1010,104,402,0,301.7,100,PayPal,Phone

@@ -1,5 +1,5 @@
 import pandas as pd
-from scripts.data_scrubber import DataScrubber
+from scripts.data_preparation.data_scrubber import DataScrubber
 import logging
 import os
 
@@ -35,6 +35,27 @@ def process_data(filename: str):
         # Step 5: Perform final consistency check after cleaning
         consistency_after = scrubber.check_data_consistency_after_cleaning()
         logger.info(f"Consistency check after cleaning: {consistency_after}")
+
+        # Generate the condensed report of changes made during cleaning
+        report = scrubber.generate_report()
+        logger.info(f"Data cleaning report:\n{report}")
+
+        # Further steps, like data transformation, outlier removal, etc., can go here
+
+        # Generate cleaned file path by maintaining the same folder structure
+        cleaned_file_path = os.path.join(
+            CLEANED_DATA_DIR, os.path.relpath(filename, RAW_DATA_DIR)
+        )
+        
+        # Ensure the cleaned data directory exists
+        os.makedirs(os.path.dirname(cleaned_file_path), exist_ok=True)
+
+        # Save the cleaned data to the new location with "_cleaned" appended to the filename
+        df.to_csv(cleaned_file_path, index=False)
+        logger.info(f"Cleaned data saved to {cleaned_file_path}")
+
+    except Exception as e:
+        logger.error(f"An error occurred: {e}")
 
         # Further steps, like data transformation, outlier removal, etc., can go here
 
