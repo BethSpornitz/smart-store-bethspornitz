@@ -1,0 +1,9 @@
+ProductID,ProductName,Category,UnitPrice,ManufacturingCcost,Brand
+101,laptop,Electronics,793.12,25,Gateway
+102,hoodie,Clothing,39.1,15,Nike
+103,cable,Electronics,22.76,10,HP
+104,hat,Clothing,43.1,50,Addidas
+105,football,Sports,19.78,20,Academy
+106,controller,Electronics,88.98,60,Atari
+107,jacket,Clothing,67.02,10,North Face
+108,protector,Electronics,12.56,15,Dell

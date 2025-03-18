@@ -19,16 +19,14 @@ import pandas as pd
 from typing import Dict, Tuple, Union, List
 
 class DataScrubber:
-    def __init__(self, df, column_standardization=None, expected_dtypes=None):
+    def __init__(self, df: pd.DataFrame):
+        """
+        Initialize the DataScrubber with a DataFrame.
+        
+        Parameters:
+            df (pd.DataFrame): The DataFrame to be scrubbed.
+        """
         self.df = df
-        self.column_standardization = column_standardization
-        self.expected_dtypes = expected_dtypes
-
-    def standardize_column_names(self):
-        """Standardizes column names based on a mapping dictionary."""
-        if self.column_standardization:
-            self.df.rename(columns=self.column_standardization, inplace=True)
-        return self.df
 
     def check_data_consistency_before_cleaning(self) -> Dict[str, Union[pd.Series, int]]:
         """

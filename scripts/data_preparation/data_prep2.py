@@ -1,103 +1,60 @@
-from data_scrubber import DataScrubber  # Assuming DataScrubber is in a separate module
 import pandas as pd
+from scripts.data_scrubber import DataScrubber
 import logging
-from pathlib import Path
+import os
 
-# Setup for logging
+# Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-RAW_DATA_DIR = Path("data/raw")
-PREPARED_DATA_DIR = Path("data/prepared")
-REPORT_DIR = Path("data/reports")
+# Define paths
+RAW_DATA_DIR = "data/raw"
+CLEANED_DATA_DIR = "data/cleaned"  # Define 'cleaned' folder similar to 'prepared'
 
-# Define column standardization map and expected data types
-COLUMN_STANDARDIZATION = {
-    "TransactionID": "Transaction_ID",
-    "SaleDate": "Purchase_Date",
-    "CustomerID": "Customer_ID",
-    "ProductID": "Product_ID",
-    "StoreID": "Store_ID",
-    "CampaignID": "Campaign_ID",
-    "SaleAmount": "Sale_Amount_USD",
-    "QuantitySold": "Quantity_Sold",
-    "PaymentMethod": "Payment_Method",
-    "SalesChannel": "Sales_Channel",
-    "ProductName": "Product_Name",
-    "Category": "Product_Category",
-    "UnitPrice": "Unit_Price_USD",
-    "ManufacturingCcost": "Manufacturing_Cost_USD",
-    "Brand": "Brand_Name",
-    "Name": "Customer_Name",
-    "Region": "Customer_Region",
-    "JoinDate": "Customer_Join_Date",
-    "LifetimeValue": "Customer_Lifetime_Value",
-    "CustomerTier": "Customer_Tier"
-}
+def process_data(filename: str):
+    try:
+        # Load data from file
+        df = pd.read_csv(filename)
 
-EXPECTED_DTYPES = {
-    "Customer_ID": "int64",
-    "Product_ID": "int64",
-    "Sale_Amount_USD": "float64",
-    "Purchase_Date": "datetime64",
-    "Quantity_Sold": "int64"
-}
+        # Initialize the DataScrubber with the loaded DataFrame
+        scrubber = DataScrubber(df)
 
-def process_data(filename):
-    df = pd.read_csv(RAW_DATA_DIR / filename, na_values=["", "N/A", "NULL"])
-    change_log = []
+        # Step 1: Standardize column names using the DataScrubber
+        df = scrubber.standardize_column_names()
 
-    logger.info(f"Raw records count for {filename}: {len(df)}")
+        # Step 2: Perform initial consistency check (null counts, duplicates)
+        consistency_before = scrubber.check_data_consistency_before_cleaning()
+        logger.info(f"Consistency check before cleaning: {consistency_before}")
 
-    # Determine the required columns based on the file type
-    file_requirements = {
-        "customers_data.csv": ["Customer_ID", "Customer_Name", "Customer_Region", "Customer_Join_Date", "Customer_Lifetime_Value"],
-        "products_data.csv": ["Product_ID", "Product_Name", "Product_Category", "Unit_Price_USD"],
-        "sales_data.csv": ["Transaction_ID", "Product_ID", "Customer_ID", "Purchase_Date", "Quantity_Sold", "Sale_Amount_USD"]
-    }
-    
-    required_columns = file_requirements.get(filename)
-    if not required_columns:
-        logger.error(f"Unknown file type for {filename}. Skipping.")
-        return None
+        # Step 3: Handle missing data (fill or drop)
+        df = scrubber.handle_missing_data(drop=False, fill_value=0)  # Example of filling missing data with 0
 
-    # Initialize DataScrubber
-    scrubber = DataScrubber(column_standardization=COLUMN_STANDARDIZATION, expected_dtypes=EXPECTED_DTYPES)
+        # Step 4: Remove duplicate records
+        df = scrubber.remove_duplicate_records()
 
-    # Standardize column names
-    df = scrubber.standardize_column_names(df)
+        # Step 5: Perform final consistency check after cleaning
+        consistency_after = scrubber.check_data_consistency_after_cleaning()
+        logger.info(f"Consistency check after cleaning: {consistency_after}")
 
-    # Check for missing required columns
-    missing_columns = [col for col in required_columns if col not in df.columns]
-    if missing_columns:
-        logger.error(f"Missing columns {missing_columns} in file {filename}. Skipping.")
-        return None
+        # Further steps, like data transformation, outlier removal, etc., can go here
 
-    # Apply cleaning methods from DataScrubber
-    df_cleaned = scrubber.clean_data(df, required_columns, change_log)
-    
-    # Handle outliers if applicable
-    if "Quantity_Sold" in df_cleaned.columns:
-        df_cleaned = scrubber.filter_column_outliers(df_cleaned, "Quantity_Sold", change_log)
+        # Generate cleaned file path by maintaining the same folder structure
+        cleaned_file_path = os.path.join(
+            CLEANED_DATA_DIR, os.path.relpath(filename, RAW_DATA_DIR)
+        )
+        
+        # Ensure the cleaned data directory exists
+        os.makedirs(os.path.dirname(cleaned_file_path), exist_ok=True)
 
-    # Ensure output directories exist
-    PREPARED_DATA_DIR.mkdir(parents=True, exist_ok=True)
-    REPORT_DIR.mkdir(parents=True, exist_ok=True)
+        # Save the cleaned data to the new location with "_cleaned" appended to the filename
+        df.to_csv(cleaned_file_path, index=False)
+        logger.info(f"Cleaned data saved to {cleaned_file_path}")
 
-    # Save cleaned data
-    prepared_filename = PREPARED_DATA_DIR / f"prepared_{Path(filename).name}"
-    df_cleaned.to_csv(prepared_filename, index=False)
-    logger.info(f"Prepared data saved to {prepared_filename}")
-
-    # Save change log
-    if change_log:
-        pd.DataFrame({"Change Log": change_log}).to_csv(REPORT_DIR / "cleaning_changes_report.csv", index=False)
-        logger.info(f"Data cleaning report saved to {REPORT_DIR / 'cleaning_changes_report.csv'}")
-
-    return df_cleaned
+    except Exception as e:
+        logger.error(f"An error occurred: {e}")
 
 def main():
-    for filename in ["customers_data.csv", "products_data.csv", "sales_data.csv"]:
+    for filename in ["data/raw/customers_data.csv", "data/raw/products_data.csv", "data/raw/sales_data.csv"]:
         process_data(filename)
 
 if __name__ == "__main__":
