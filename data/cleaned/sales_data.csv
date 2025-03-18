@@ -94,4 +94,3 @@ transactionid,saledate,customerid,productid,storeid,campaignid,saleamount,quanti
 642,10/10/2024,1002,101,402,0,5551.84,17,PayPal,Online
 643,10/10/2024,1010,104,402,0,301.7,100,PayPal,Phone
 644,10/10/2024,1010,104,402,0,305.0,100,0,Phone
-643,10/10/2024,1010,104,402,0,301.7,100,PayPal,Phone
