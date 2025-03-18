@@ -35,6 +35,9 @@ class DataScrubber:
         elif fill_value is not None:
             self.df = self.df.fillna(fill_value)
             self.report['missing_data_handling'] = f'Filled missing data with {fill_value}.'
+
+    # Track missing values after handling
+        self.report['null_counts_after'] = self.df.isnull().sum()
         return self.df
 
     def remove_duplicate_records(self) -> pd.DataFrame:
