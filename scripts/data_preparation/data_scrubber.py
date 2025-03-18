@@ -33,7 +33,6 @@ class DataScrubber:
 
     # Other methods like check_data_consistency_before_cleaning, drop_columns, etc. remain the same
 
-    # Other existing methods ...
 
     def generate_report(self) -> str:
         """
