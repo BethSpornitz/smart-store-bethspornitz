@@ -1,0 +1,39 @@
+Null counts before cleaning:
+
+customerid       0
+name             0
+region           0
+joindate         0
+lifetimevalue    0
+customertier     0
+dtype: int64
+
+Null counts after cleaning:
+
+customerid       0
+name             0
+region           0
+joindate         0
+lifetimevalue    0
+customertier     0
+dtype: int64
+
+Duplicate counts before cleaning:
+
+0
+
+Duplicate counts after cleaning:
+
+0
+
+Columns dropped during cleaning:
+
+None
+
+Data types changed:
+
+None
+
+Missing data handling:
+
+Filled missing data with 0.

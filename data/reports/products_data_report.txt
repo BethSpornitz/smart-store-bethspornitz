@@ -1,0 +1,39 @@
+Null counts before cleaning:
+
+productid             0
+productname           0
+category              0
+unitprice             0
+manufacturingccost    0
+brand                 0
+dtype: int64
+
+Null counts after cleaning:
+
+productid             0
+productname           0
+category              0
+unitprice             0
+manufacturingccost    0
+brand                 0
+dtype: int64
+
+Duplicate counts before cleaning:
+
+0
+
+Duplicate counts after cleaning:
+
+0
+
+Columns dropped during cleaning:
+
+None
+
+Data types changed:
+
+None
+
+Missing data handling:
+
+Filled missing data with 0.

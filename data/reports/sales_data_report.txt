@@ -1,0 +1,47 @@
+Null counts before cleaning:
+
+transactionid    0
+saledate         0
+customerid       0
+productid        0
+storeid          0
+campaignid       0
+saleamount       0
+quantitysold     0
+paymentmethod    1
+saleschannel     0
+dtype: int64
+
+Null counts after cleaning:
+
+transactionid    0
+saledate         0
+customerid       0
+productid        0
+storeid          0
+campaignid       0
+saleamount       0
+quantitysold     0
+paymentmethod    0
+saleschannel     0
+dtype: int64
+
+Duplicate counts before cleaning:
+
+1
+
+Duplicate counts after cleaning:
+
+0
+
+Columns dropped during cleaning:
+
+None
+
+Data types changed:
+
+None
+
+Missing data handling:
+
+Filled missing data with 0.
