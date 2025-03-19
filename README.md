@@ -2,13 +2,33 @@
 
 ## Overview
 
-Project 2 focuses on developing proficiency in Git for version control, managing Python virtual environments, and making sure all of the proper files and scripts are in place before beginning a project. The project entails installing requirements and setting up the logger as well as running an initial Python script.
+This script processes raw CSV data files by performing data cleaning operations such as standardizing column names, handling missing data, removing duplicate records, and generating reports on the cleaning process. The cleaned data is saved in a designated directory, and reports are generated to summarize changes made.
 
 ## Features
 
 - Installing Required Libraries
 - Setting up important files
 - Running an initial Python script
+  -Standardizes column names
+  -Checks data consistency before and after cleaning
+  -Handles missing data by filling or dropping values
+  -Removes duplicate records
+  -Saves cleaned data into a specified folder
+  -Generates and saves reports summarizing data cleaning steps
+  -Logs errors and saves error reports if issues occur
+
+## Project Structure
+
+project_root/
+│── data/
+│ ├── raw/ # Contains raw CSV files
+│ ├── cleaned/ # Stores cleaned data files
+│ ├── reports/ # Stores generated reports
+│── scripts/
+│ ├── data_scrubber.py # DataScrubber class
+│ ├── data_preparation/
+│ │ ├── data_prep2.py # Main script for processing data
+│── README.md
 
 ## Installation
 
@@ -21,13 +41,53 @@ loguru
 
 git clone https://github.com/BethSpornitz/smart-store-bethspornitz
 
-## Usage
-
-The project contains functions to process an initial Python file.
-
 ## Create Project Virtual Environment
 
 On Windows, create a project virtual environment in the .venv folder.
+
+## Usage
+
+Run the script using:
+
+python scripts/data_preparation/data_prep2.py
+
+This will process the following raw data files:
+
+data/raw/customers_data.csv
+
+data/raw/products_data.csv
+
+data/raw/sales_data.csv
+
+## Output
+
+Cleaned files will be saved in data/cleaned/.
+
+Reports summarizing data cleaning steps will be saved in data/reports/.
+
+Error reports (if any issues occur) will also be saved in data/reports/.
+
+## Logging
+
+The script logs important steps and errors using Python's logging module. Log messages include:
+
+Consistency check results
+
+Paths of saved cleaned files
+
+Report file paths
+
+Error messages (if any occur during processing)
+
+## Dependencies
+
+Python 3.x
+
+pandas
+
+logging
+
+unittest
 
 ```shell
 
