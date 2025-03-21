@@ -1,21 +1,21 @@
 Null counts before cleaning:
 
-customerid       0
-name             0
-region           0
-joindate         0
-lifetimevalue    0
-customertier     0
+customer_id                0
+customer_name              0
+customer_region            0
+customer_join_date         0
+customer_lifetime_value    0
+customer_tier              0
 dtype: int64
 
 Null counts after cleaning:
 
-customerid       0
-name             0
-region           0
-joindate         0
-lifetimevalue    0
-customertier     0
+customer_id                0
+customer_name              0
+customer_region            0
+customer_join_date         0
+customer_lifetime_value    0
+customer_tier              0
 dtype: int64
 
 Duplicate counts before cleaning:
@@ -36,4 +36,8 @@ None
 
 Missing data handling:
 
-Filled missing data with 0.
+Dropped rows with missing data.
+
+Rows dropped due to outliers:
+
+None

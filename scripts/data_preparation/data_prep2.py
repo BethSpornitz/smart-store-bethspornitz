@@ -21,15 +21,61 @@ logger = logging.getLogger(__name__)
 
 # Define paths
 RAW_DATA_DIR = "data/raw"
-CLEANED_DATA_DIR = "data/cleaned"  # Define 'cleaned' folder similar to 'prepared'
+PREPARED_DATA_DIR = "data/prepared"
+REPORTS_DIR = "data/reports"  
+
+# Constants for standardization and expected data types
+COLUMN_STANDARDIZATION = {
+    "TransactionID": "Transaction_ID",
+    "SaleDate": "Purchase_Date",
+    "CustomerID": "Customer_ID",
+    "ProductID": "Product_ID",
+    "StoreID": "Store_ID",
+    "CampaignID": "Campaign_ID",
+    "SaleAmount": "Sale_Amount_USD",
+    "QuantitySold": "Quantity_Sold",
+    "PaymentMethod": "Payment_Method",
+    "SalesChannel": "Sales_Channel"
+}
+
+COLUMN_STANDARDIZATION.update({
+    "ProductName": "Product_Name",
+    "Category": "Product_Category",
+    "UnitPrice": "Unit_Price_USD",
+    "ManufacturingCcost": "Manufacturing_Cost_USD",
+    "Brand": "Brand_Name"
+})
+
+COLUMN_STANDARDIZATION.update({
+    "Name": "Customer_Name",
+    "Region": "Customer_Region",
+    "JoinDate": "Customer_Join_Date",
+    "LifetimeValue": "Customer_Lifetime_Value",
+    "CustomerTier": "Customer_Tier"
+})
+
+EXPECTED_DTYPES = {
+    "Customer_ID": "int64",
+    "Product_ID": "int64",
+    "Sale_Amount_USD": "float64",
+    "Purchase_Date": "datetime64[ns]",
+    "Quantity_Sold": "int64"
+}
+
 
 def process_data(filename: str):
     try:
-        # Define the reports directory
-        REPORTS_DIR = "data/reports"  # Directory where the reports will be saved
 
         # Load data from file
         df = pd.read_csv(filename)
+
+         # Standardize column names
+        df = df.rename(columns=COLUMN_STANDARDIZATION)
+
+        # Convert columns to the expected data types
+        for column, dtype in EXPECTED_DTYPES.items():
+            if column in df.columns:
+                df[column] = df[column].astype(dtype)
 
         # Initialize the DataScrubber with the loaded DataFrame
         scrubber = DataScrubber(df)
@@ -42,26 +88,29 @@ def process_data(filename: str):
         logger.info(f"Consistency check before cleaning: {consistency_before}")
 
         # Step 3: Handle missing data (fill or drop)
-        df = scrubber.handle_missing_data(drop=False, fill_value=0)  # Example of filling missing data with 0
+        df = scrubber.handle_missing_data(drop=True, fill_value=0)  # Example of filling missing data with 0
 
         # Step 4: Remove duplicate records
         df = scrubber.remove_duplicate_records()
 
-        # Step 5: Perform final consistency check after cleaning
+        # Step 5:  Remove rows with outliers
+        df = scrubber.remove_outliers()
+
+        # Step 6: Perform final consistency check after cleaning
         consistency_after = scrubber.check_data_consistency_after_cleaning()
         logger.info(f"Consistency check after cleaning: {consistency_after}")
 
-        # Generate cleaned file path by maintaining the same folder structure
-        cleaned_file_path = os.path.join(
-            CLEANED_DATA_DIR, os.path.relpath(filename, RAW_DATA_DIR)
+        # Step 7:  Generate cleaned file path by maintaining the same folder structure
+        prepared_file_path = os.path.join(
+            PREPARED_DATA_DIR, os.path.relpath(filename, RAW_DATA_DIR)
         )
         
         # Ensure the cleaned data directory exists
-        os.makedirs(os.path.dirname(cleaned_file_path), exist_ok=True)
+        os.makedirs(os.path.dirname(prepared_file_path), exist_ok=True)
 
         # Save the cleaned data to the new location with "_cleaned" appended to the filename
-        df.to_csv(cleaned_file_path, index=False)
-        logger.info(f"Cleaned data saved to {cleaned_file_path}")
+        df.to_csv(prepared_file_path, index=False)
+        logger.info(f"Cleaned data saved to {prepared_file_path}")
 
         # Generate the condensed report of changes made during cleaning
         report = scrubber.generate_report()

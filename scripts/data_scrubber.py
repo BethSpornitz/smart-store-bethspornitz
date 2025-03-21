@@ -29,6 +29,22 @@ class DataScrubber:
         self.df = df
         self.report = {}
 
+    def remove_outliers(self) -> pd.DataFrame:
+        """
+        Remove rows containing outliers based on the IQR method.
+        
+        Returns:
+            pd.DataFrame: Updated DataFrame with outliers removed.
+        """
+        for column in self.df.select_dtypes(include=["float64", "int64"]).columns:
+            Q1 = self.df[column].quantile(0.25)
+            Q3 = self.df[column].quantile(0.75)
+            IQR = Q3 - Q1
+            lower_bound = Q1 - 1.5 * IQR
+            upper_bound = Q3 + 1.5 * IQR
+            self.df = self.df[(self.df[column] >= lower_bound) & (self.df[column] <= upper_bound)]
+        return self.df
+
     def check_data_consistency_before_cleaning(self) -> Dict[str, Union[pd.Series, int]]:
         """
         Check data consistency before cleaning by calculating counts of null and duplicate entries.
@@ -305,5 +321,8 @@ class DataScrubber:
 
         report.append("\nMissing data handling:\n")
         report.append(str(self.report.get('missing_data_handling', 'None')))
+
+        report.append("\nRows dropped due to outliers:\n")
+        report.append(str(self.report.get('outlier_dropped_rows', 'None')))
 
         return "\n".join(report)

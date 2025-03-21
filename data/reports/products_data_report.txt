@@ -1,21 +1,21 @@
 Null counts before cleaning:
 
-productid             0
-productname           0
-category              0
-unitprice             0
-manufacturingccost    0
-brand                 0
+product_id                0
+product_name              0
+product_category          0
+unit_price_usd            0
+manufacturing_cost_usd    0
+brand_name                0
 dtype: int64
 
 Null counts after cleaning:
 
-productid             0
-productname           0
-category              0
-unitprice             0
-manufacturingccost    0
-brand                 0
+product_id                0
+product_name              0
+product_category          0
+unit_price_usd            0
+manufacturing_cost_usd    0
+brand_name                0
 dtype: int64
 
 Duplicate counts before cleaning:
@@ -36,4 +36,8 @@ None
 
 Missing data handling:
 
-Filled missing data with 0.
+Dropped rows with missing data.
+
+Rows dropped due to outliers:
+
+None

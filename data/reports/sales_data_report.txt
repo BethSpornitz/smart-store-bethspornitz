@@ -1,29 +1,29 @@
 Null counts before cleaning:
 
-transactionid    0
-saledate         0
-customerid       0
-productid        0
-storeid          0
-campaignid       0
-saleamount       0
-quantitysold     0
-paymentmethod    1
-saleschannel     0
+transaction_id     0
+purchase_date      0
+customer_id        0
+product_id         0
+store_id           0
+campaign_id        0
+sale_amount_usd    0
+quantity_sold      0
+payment_method     1
+sales_channel      0
 dtype: int64
 
 Null counts after cleaning:
 
-transactionid    0
-saledate         0
-customerid       0
-productid        0
-storeid          0
-campaignid       0
-saleamount       0
-quantitysold     0
-paymentmethod    0
-saleschannel     0
+transaction_id     0
+purchase_date      0
+customer_id        0
+product_id         0
+store_id           0
+campaign_id        0
+sale_amount_usd    0
+quantity_sold      0
+payment_method     0
+sales_channel      0
 dtype: int64
 
 Duplicate counts before cleaning:
@@ -44,4 +44,8 @@ None
 
 Missing data handling:
 
-Filled missing data with 0.
+Dropped rows with missing data.
+
+Rows dropped due to outliers:
+
+None
