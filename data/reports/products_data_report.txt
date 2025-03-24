@@ -1,43 +1,17 @@
-Null counts before cleaning:
-
-product_id                0
+Standardized column names.
+Consistency before cleaning: {'null_counts': product_id                0
 product_name              0
 product_category          0
 unit_price_usd            0
 manufacturing_cost_usd    0
 brand_name                0
-dtype: int64
-
-Null counts after cleaning:
-
-product_id                0
+dtype: int64, 'duplicate_count': np.int64(0)}
+Filled missing data with 0.
+Removed duplicate records.
+Consistency after cleaning: {'null_counts': product_id                0
 product_name              0
 product_category          0
 unit_price_usd            0
 manufacturing_cost_usd    0
 brand_name                0
-dtype: int64
-
-Duplicate counts before cleaning:
-
-0
-
-Duplicate counts after cleaning:
-
-0
-
-Columns dropped during cleaning:
-
-None
-
-Data types changed:
-
-None
-
-Missing data handling:
-
-Dropped rows with missing data.
-
-Rows dropped due to outliers:
-
-None
+dtype: int64, 'duplicate_count': np.int64(0)}

@@ -1,43 +1,17 @@
-Null counts before cleaning:
-
-customer_id                0
+Standardized column names.
+Consistency before cleaning: {'null_counts': customer_id                0
 customer_name              0
 customer_region            0
 customer_join_date         0
 customer_lifetime_value    0
 customer_tier              0
-dtype: int64
-
-Null counts after cleaning:
-
-customer_id                0
+dtype: int64, 'duplicate_count': np.int64(0)}
+Filled missing data with 0.
+Removed duplicate records.
+Consistency after cleaning: {'null_counts': customer_id                0
 customer_name              0
 customer_region            0
 customer_join_date         0
 customer_lifetime_value    0
 customer_tier              0
-dtype: int64
-
-Duplicate counts before cleaning:
-
-0
-
-Duplicate counts after cleaning:
-
-0
-
-Columns dropped during cleaning:
-
-None
-
-Data types changed:
-
-None
-
-Missing data handling:
-
-Dropped rows with missing data.
-
-Rows dropped due to outliers:
-
-None
+dtype: int64, 'duplicate_count': np.int64(0)}

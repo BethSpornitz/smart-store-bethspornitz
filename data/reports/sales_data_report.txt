@@ -1,6 +1,5 @@
-Null counts before cleaning:
-
-transaction_id     0
+Standardized column names.
+Consistency before cleaning: {'null_counts': transaction_id     0
 purchase_date      0
 customer_id        0
 product_id         0
@@ -10,11 +9,10 @@ sale_amount_usd    0
 quantity_sold      0
 payment_method     1
 sales_channel      0
-dtype: int64
-
-Null counts after cleaning:
-
-transaction_id     0
+dtype: int64, 'duplicate_count': np.int64(1)}
+Filled missing data with 0.
+Removed duplicate records.
+Consistency after cleaning: {'null_counts': transaction_id     0
 purchase_date      0
 customer_id        0
 product_id         0
@@ -24,28 +22,4 @@ sale_amount_usd    0
 quantity_sold      0
 payment_method     0
 sales_channel      0
-dtype: int64
-
-Duplicate counts before cleaning:
-
-1
-
-Duplicate counts after cleaning:
-
-0
-
-Columns dropped during cleaning:
-
-None
-
-Data types changed:
-
-None
-
-Missing data handling:
-
-Dropped rows with missing data.
-
-Rows dropped due to outliers:
-
-None
+dtype: int64, 'duplicate_count': np.int64(0)}

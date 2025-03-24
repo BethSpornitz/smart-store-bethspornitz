@@ -80,25 +80,34 @@ def process_data(filename: str):
         # Initialize the DataScrubber with the loaded DataFrame
         scrubber = DataScrubber(df)
 
+         # Initialize change log
+        change_log = []
+
         # Step 1: Standardize column names using the DataScrubber
         df = scrubber.standardize_column_names()
+        change_log.append("Standardized column names.")
 
         # Step 2: Perform initial consistency check (null counts, duplicates)
         consistency_before = scrubber.check_data_consistency_before_cleaning()
         logger.info(f"Consistency check before cleaning: {consistency_before}")
+        change_log.append(f"Consistency before cleaning: {consistency_before}")
 
         # Step 3: Handle missing data (fill or drop)
-        df = scrubber.handle_missing_data(drop=True, fill_value=0)  # Example of filling missing data with 0
+        df = scrubber.handle_missing_data(drop=False, fill_value=0)  # Example of filling missing data with 0
+        change_log.append("Filled missing data with 0.")
 
         # Step 4: Remove duplicate records
         df = scrubber.remove_duplicate_records()
+        change_log.append("Removed duplicate records.")
 
         # Step 5:  Remove rows with outliers
-        df = scrubber.remove_outliers()
+        #df = scrubber.remove_outliers()
+        #change_log.append("Removed rows with outliers.")
 
         # Step 6: Perform final consistency check after cleaning
         consistency_after = scrubber.check_data_consistency_after_cleaning()
         logger.info(f"Consistency check after cleaning: {consistency_after}")
+        change_log.append(f"Consistency after cleaning: {consistency_after}")
 
         # Step 7:  Generate cleaned file path by maintaining the same folder structure
         prepared_file_path = os.path.join(
@@ -108,14 +117,18 @@ def process_data(filename: str):
         # Ensure the cleaned data directory exists
         os.makedirs(os.path.dirname(prepared_file_path), exist_ok=True)
 
-        # Save the cleaned data to the new location with "_cleaned" appended to the filename
+        # Save the cleaned data to the new location with "_prepared" appended to the filename
         df.to_csv(prepared_file_path, index=False)
         logger.info(f"Cleaned data saved to {prepared_file_path}")
 
-        # Generate the condensed report of changes made during cleaning
-        report = scrubber.generate_report()
+
+
+        # Step 8:  Generate the condensed report of changes made during cleaning
+        report = "\n".join(change_log)
+     
   
         # Save the report to the reports folder
+        
         report_filename = Path(REPORTS_DIR) / f"{Path(filename).stem}_report.txt"
         with open(report_filename, "w") as report_file:
             report_file.write(report)

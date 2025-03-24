@@ -36,6 +36,7 @@ class DataScrubber:
         Returns:
             pd.DataFrame: Updated DataFrame with outliers removed.
         """
+        initial_row_count = len(self.df)
         for column in self.df.select_dtypes(include=["float64", "int64"]).columns:
             Q1 = self.df[column].quantile(0.25)
             Q3 = self.df[column].quantile(0.75)
@@ -43,6 +44,9 @@ class DataScrubber:
             lower_bound = Q1 - 1.5 * IQR
             upper_bound = Q3 + 1.5 * IQR
             self.df = self.df[(self.df[column] >= lower_bound) & (self.df[column] <= upper_bound)]
+             # Capture the number of dropped rows
+        dropped_rows = initial_row_count - len(self.df)
+        self.report['outlier_dropped_rows'] = dropped_rows
         return self.df
 
     def check_data_consistency_before_cleaning(self) -> Dict[str, Union[pd.Series, int]]:
@@ -113,6 +117,7 @@ class DataScrubber:
             if column not in self.df.columns:
                 raise ValueError(f"Column name '{column}' not found in the DataFrame.")
         self.df = self.df.drop(columns=columns)
+        self.report['dropped_columns'] = columns
         return self.df
 
     def filter_column_outliers(self, column: str, lower_bound: Union[float, int], upper_bound: Union[float, int]) -> pd.DataFrame:
