@@ -6,11 +6,6 @@ import sys
 from io import StringIO
 import pandas as pd
 
-# For local imports, temporarily add project root to Python sys.path
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.append(str(PROJECT_ROOT))
-
 # Import DataScrubber from the scripts module
 from scripts.data_scrubber import DataScrubber  # noqa: E402
 
@@ -18,11 +13,6 @@ from scripts.data_scrubber import DataScrubber  # noqa: E402
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-# Define paths
-RAW_DATA_DIR = "data/raw"
-PREPARED_DATA_DIR = "data/prepared"
-REPORTS_DIR = "data/reports"  
 
 # Constants for standardization and expected data types
 COLUMN_STANDARDIZATION = {
@@ -58,10 +48,34 @@ EXPECTED_DTYPES = {
     "Customer_ID": "int64",
     "Product_ID": "int64",
     "Sale_Amount_USD": "float64",
-    "Purchase_Date": "datetime64[ns]",
-    "Quantity_Sold": "int64"
+    "Purchase_Date":"datetime64[ns]",
+    "Quantity_Sold":"int64"
 }
 
+# Define file paths
+RAW_DATA_DIR = Path("data/raw")
+PREPARED_DATA_DIR = Path("data/prepared")
+REPORT_DIR = Path("data/report")
+
+# Ensure the output directories exist
+PREPARED_DATA_DIR.mkdir(parents=True, exist_ok=True)
+REPORT_DIR.mkdir(parents=True, exist_ok=True)
+
+def handle_outliers_zscore(df, column, threshold=3, change_log=None):
+    if column not in df.columns:
+        logger.warning(f"Column {column} not found in the DataFrame. Skipping outlier handling.")
+        return df
+
+    z_scores = stats.zscore(df[column].dropna())
+    abs_z_scores = np.abs(z_scores)
+    outliers = abs_z_scores > threshold
+
+    outlier_count = outliers.sum()
+    if outlier_count > 0:
+        if change_log is not None:
+            change_log.append(f"Dropped {outlier_count} outliers from column '{column}' using Z-score method.")
+        df = df[~outliers]
+    return df
 
 def process_data(filename: str):
     try:
@@ -100,9 +114,18 @@ def process_data(filename: str):
         df = scrubber.remove_duplicate_records()
         change_log.append("Removed duplicate records.")
 
-        # Step 5:  Remove rows with outliers
-        #df = scrubber.remove_outliers()
-        #change_log.append("Removed rows with outliers.")
+  # Step 5: Remove rows with outliers in 'Quantity_Sold'
+
+  
+
+  
+        if 'Quantity_Sold' in df.columns:
+            df = scrubber.remove_outliers_zscore(column_name='Quantity_Sold')
+            change_log.append("Removed outliers from 'Quantity_Sold' using Z-score method.")
+     # Handle outliers if applicable
+        if "QuantitySold" in df.columns:
+        	df = scrubber.remove_outliers_zscore(df, "QuantitySold", threshold=3, change_log=change_log)
+
 
         # Step 6: Perform final consistency check after cleaning
         consistency_after = scrubber.check_data_consistency_after_cleaning()
@@ -111,8 +134,8 @@ def process_data(filename: str):
 
         # Step 7:  Generate cleaned file path by maintaining the same folder structure
         prepared_file_path = os.path.join(
-            PREPARED_DATA_DIR, os.path.relpath(filename, RAW_DATA_DIR)
-        )
+            PREPARED_DATA_DIR, os.path.basename(filename)
+)
         
         # Ensure the cleaned data directory exists
         os.makedirs(os.path.dirname(prepared_file_path), exist_ok=True)
@@ -129,7 +152,7 @@ def process_data(filename: str):
   
         # Save the report to the reports folder
         
-        report_filename = Path(REPORTS_DIR) / f"{Path(filename).stem}_report.txt"
+        report_filename = Path(REPORT_DIR) / f"{Path(filename).stem}_report.txt"
         with open(report_filename, "w") as report_file:
             report_file.write(report)
         logger.info(f"Data cleaning report saved to {report_filename}")
@@ -140,15 +163,24 @@ def process_data(filename: str):
 
         # Save the error message to a report file
         error_report = f"An error occurred during data cleaning: {str(e)}"
-        error_report_filename = os.path.join(REPORTS_DIR, f"{os.path.basename(filename).replace('.csv', '_error_report.txt')}")
-        os.makedirs(REPORTS_DIR, exist_ok=True)  # Ensure the reports folder exists
+        error_report_filename = os.path.join(REPORT_DIR, f"{os.path.basename(filename).replace('.csv', '_error_report.txt')}")
+        os.makedirs(REPORT_DIR, exist_ok=True)  # Ensure the reports folder exists
         with open(error_report_filename, "w") as error_report_file:
             error_report_file.write(error_report)
         logger.info(f"Error report saved to {error_report_filename}")
 
 def main():
-    for filename in ["data/raw/customers_data.csv", "data/raw/products_data.csv", "data/raw/sales_data.csv"]:
-        process_data(filename)
+    raw_data_dir = Path("data/raw")
+    if not raw_data_dir.exists():
+        logger.error(f"Directory not found: {raw_data_dir}")
+        return
+
+    for file_path in raw_data_dir.glob("*.csv"):
+        logger.info(f"Processing file: {file_path.name}")
+        try:
+            process_data(file_path)
+        except Exception as e:
+            logger.error(f"Error processing {file_path.name}: {e}")
 
 if __name__ == "__main__":
     main()

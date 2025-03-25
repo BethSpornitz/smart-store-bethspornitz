@@ -1,4 +1,4 @@
-r"""
+"""
 scripts/data_scrubber.py
 
 Do not run this script directly. 
@@ -11,89 +11,73 @@ Then, call the methods, providing arguments as needed to enjoy common,
 re-usable cleaning and preparation methods. 
 
 See the associated test script in the tests folder. 
-
 """
 
 import io
 import pandas as pd
 from typing import Dict, Tuple, Union, List
+from scipy import stats
+import numpy as np
 
 class DataScrubber:
     def __init__(self, df: pd.DataFrame):
-        """
-        Initialize the DataScrubber with a DataFrame.
-        
-        Parameters:
-            df (pd.DataFrame): The DataFrame to be scrubbed.
-        """
         self.df = df
         self.report = {}
 
-    def remove_outliers(self) -> pd.DataFrame:
-        """
-        Remove rows containing outliers based on the IQR method.
-        
-        Returns:
-            pd.DataFrame: Updated DataFrame with outliers removed.
-        """
+    def remove_outliers_iqr(self, column_name: str) -> pd.DataFrame:
+        self.df[column_name] = pd.to_numeric(self.df[column_name], errors='coerce')
+        Q1 = self.df[column_name].quantile(0.25)
+        Q3 = self.df[column_name].quantile(0.75)
+        IQR = Q3 - Q1
+        lower_bound = Q1 - 1.5 * IQR
+        upper_bound = Q3 + 1.5 * IQR
         initial_row_count = len(self.df)
-        for column in self.df.select_dtypes(include=["float64", "int64"]).columns:
-            Q1 = self.df[column].quantile(0.25)
-            Q3 = self.df[column].quantile(0.75)
-            IQR = Q3 - Q1
-            lower_bound = Q1 - 1.5 * IQR
-            upper_bound = Q3 + 1.5 * IQR
-            self.df = self.df[(self.df[column] >= lower_bound) & (self.df[column] <= upper_bound)]
-             # Capture the number of dropped rows
+        self.df = self.df[(self.df[column_name] >= lower_bound) & (self.df[column_name] <= upper_bound)]
         dropped_rows = initial_row_count - len(self.df)
         self.report['outlier_dropped_rows'] = dropped_rows
         return self.df
 
+    def remove_outliers_zscore(self, column_name: str, threshold: float = 3.0) -> pd.DataFrame:
+        if column_name not in self.df.columns:
+            raise ValueError(f"Column '{column_name}' not found in the DataFrame.")
+        self.df[column_name] = pd.to_numeric(self.df[column_name], errors='coerce')
+        col_values = self.df[column_name].dropna()
+        z_scores = stats.zscore(col_values)
+        abs_z_scores = np.abs(z_scores)
+        filtered_indicess = col_values.index[abs_z_scores < threshold]
+        dropped_count = len(self.df) - len(filtered_indices)
+            # Filter the original dataframe using valid indices
+        self.df = self.df.loc[filtered_indices]
+
+
+    # Save to report
+        self.report['outlier_dropped_rows_zscore'] = dropped_count
+
+        return self.df
+        filtered_entries = abs_z_scores < threshold
+        valid_indices = col_values.index[filtered_entries]
+        outlier_count = len(self.df) - len(valid_indices)
+        self.df = self.df.loc[valid_indices]
+        self.report['outlier_dropped_rows_zscore'] = outlier_count
+        return self.df
+
     def check_data_consistency_before_cleaning(self) -> Dict[str, Union[pd.Series, int]]:
-        """
-        Check data consistency before cleaning by calculating counts of null and duplicate entries.
-        
-        Returns:
-            dict: Dictionary with counts of null values and duplicate rows.
-        """
         null_counts = self.df.isnull().sum()
         duplicate_count = self.df.duplicated().sum()
-        # Save the report data
         self.report['null_counts_before'] = null_counts
         self.report['duplicate_count_before'] = duplicate_count
         return {'null_counts': null_counts, 'duplicate_count': duplicate_count}
 
     def check_data_consistency_after_cleaning(self) -> Dict[str, Union[pd.Series, int]]:
-        """
-        Check data consistency after cleaning to ensure there are no null or duplicate entries.
-        
-        Returns:
-            dict: Dictionary with counts of null values and duplicate rows, expected to be zero for each.
-        """
         null_counts = self.df.isnull().sum()
         duplicate_count = self.df.duplicated().sum()
-        # Save the report data
         self.report['null_counts_after'] = null_counts
         self.report['duplicate_count_after'] = duplicate_count
-        # Ensure data has been properly cleaned
         assert null_counts.sum() == 0, "Data still contains null values after cleaning."
         assert duplicate_count == 0, "Data still contains duplicate records after cleaning."
         return {'null_counts': null_counts, 'duplicate_count': duplicate_count}
 
     def convert_column_to_new_data_type(self, column: str, new_type: type) -> pd.DataFrame:
-        """
-        Convert a specified column to a new data type.
-        
-        Parameters:
-            column (str): Name of the column to convert.
-            new_type (type): The target data type (e.g., 'int', 'float', 'str').
-        
-        Returns:
-            pd.DataFrame: Updated DataFrame with the column type converted.
-
-        Raises:
-            ValueError: If the specified column not found in the DataFrame.
-        """
         try:
             self.df[column] = self.df[column].astype(new_type)
             return self.df
@@ -101,18 +85,6 @@ class DataScrubber:
             raise ValueError(f"Column name '{column}' not found in the DataFrame.")
 
     def drop_columns(self, columns: List[str]) -> pd.DataFrame:
-        """
-        Drop specified columns from the DataFrame.
-        
-        Parameters:
-            columns (list): List of column names to drop.
-        
-        Returns:
-            pd.DataFrame: Updated DataFrame with specified columns removed.
-
-        Raises:
-            ValueError: If a specified column is not found in the DataFrame.
-        """
         for column in columns:
             if column not in self.df.columns:
                 raise ValueError(f"Column name '{column}' not found in the DataFrame.")
@@ -121,20 +93,6 @@ class DataScrubber:
         return self.df
 
     def filter_column_outliers(self, column: str, lower_bound: Union[float, int], upper_bound: Union[float, int]) -> pd.DataFrame:
-        """
-        Filter outliers in a specified column based on lower and upper bounds.
-        
-        Parameters:
-            column (str): Name of the column to filter for outliers.
-            lower_bound (float or int): Lower threshold for outlier filtering.
-            upper_bound (float or int): Upper threshold for outlier filtering.
-        
-        Returns:
-            pd.DataFrame: Updated DataFrame with outliers filtered out.
- 
-        Raises:
-            ValueError: If the specified column not found in the DataFrame.
-        """
         try:
             self.df = self.df[(self.df[column] >= lower_bound) & (self.df[column] <= upper_bound)]
             return self.df
@@ -142,95 +100,37 @@ class DataScrubber:
             raise ValueError(f"Column name '{column}' not found in the DataFrame.")
 
     def format_column_strings_to_lower_and_trim(self, column: str) -> pd.DataFrame:
-        """
-        Format strings in a specified column by converting to lowercase and trimming whitespace.
-        
-        Parameters:
-            column (str): Name of the column to format.
-        
-        Returns:
-            pd.DataFrame: Updated DataFrame with formatted string column.
-
-        Raises:
-            ValueError: If the specified column not found in the DataFrame.
-        """
         try:
             self.df[column] = self.df[column].str.lower().str.strip()
             return self.df
         except KeyError:
             raise ValueError(f"Column name '{column}' not found in the DataFrame.")
-        
-    def format_column_strings_to_upper_and_trim(self, column: str) -> pd.DataFrame:
-        """
-        Format strings in a specified column by converting to uppercase and trimming whitespace.
-        
-        Parameters:
-            column (str): Name of the column to format.
-        
-        Returns:
-            pd.DataFrame: Updated DataFrame with formatted string column.
 
-        Raises:
-            ValueError: If the specified column not found in the DataFrame.
-        """
+    def format_column_strings_to_upper_and_trim(self, column: str) -> pd.DataFrame:
         try:
-        
             self.df[column] = self.df[column].str.upper().str.strip()
             return self.df
         except KeyError:
             raise ValueError(f"Column name '{column}' not found in the DataFrame.")
 
     def handle_missing_data(self, drop: bool = False, fill_value: Union[None, float, int, str] = None) -> pd.DataFrame:
-        """
-        Handle missing data in the DataFrame.
-        
-        Parameters:
-            drop (bool, optional): If True, drop rows with missing values. Default is False.
-            fill_value (any, optional): Value to fill in for missing entries if drop is False.
-        
-        Returns:
-            pd.DataFrame: Updated DataFrame with missing data handled.
-        """
         if drop:
             self.df = self.df.dropna()
             self.report['missing_data_handling'] = 'Dropped rows with missing data.'
         elif fill_value is not None:
             self.df = self.df.fillna(fill_value)
             self.report['missing_data_handling'] = f'Filled missing data with {fill_value}.'
-            # Track missing values after handling
             self.report['null_counts_after'] = self.df.isnull().sum()
-
         return self.df
 
     def inspect_data(self) -> Tuple[str, str]:
-        """
-        Inspect the data by providing DataFrame information and summary statistics.
-        
-        Returns:
-            tuple: (info_str, describe_str), where `info_str` is a string representation of DataFrame.info()
-                   and `describe_str` is a string representation of DataFrame.describe().
-        """
         buffer = io.StringIO()
         self.df.info(buf=buffer)
-        info_str = buffer.getvalue()  # Retrieve the string content of the buffer
-
-        # Capture the describe output as a string
-        describe_str = self.df.describe().to_string()  # Convert DataFrame.describe() output to a string
+        info_str = buffer.getvalue()
+        describe_str = self.df.describe().to_string()
         return info_str, describe_str
 
     def parse_dates_to_add_standard_datetime(self, column: str) -> pd.DataFrame:
-        """
-        Parse a specified column as datetime format and add it as a new column named 'StandardDateTime'.
-        
-        Parameters:
-            column (str): Name of the column to parse as datetime.
-        
-        Returns:
-            pd.DataFrame: Updated DataFrame with a new 'StandardDateTime' column containing parsed datetime values.
-
-        Raises:
-            ValueError: If the specified column not found in the DataFrame.
-        """
         try:
             self.df['StandardDateTime'] = pd.to_datetime(self.df[column])
             return self.df
@@ -238,96 +138,48 @@ class DataScrubber:
             raise ValueError(f"Column name '{column}' not found in the DataFrame.")
 
     def remove_duplicate_records(self) -> pd.DataFrame:
-        """
-        Remove duplicate rows from the DataFrame.
-        
-        Returns:
-            pd.DataFrame: Updated DataFrame with duplicates removed.
-
-        """
         before_count = len(self.df)
         self.df = self.df.drop_duplicates()
         after_count = len(self.df)
-        # Save the number of duplicates removed to the report
         self.report['duplicate_count_removed'] = before_count - after_count
         return self.df
 
     def rename_columns(self, column_mapping: Dict[str, str]) -> pd.DataFrame:
-        """
-        Rename columns in the DataFrame based on a provided mapping.
-        
-        Parameters:
-            column_mapping (dict): Dictionary where keys are old column names and values are new names.
-        
-        Returns:
-            pd.DataFrame: Updated DataFrame with renamed columns.
-
-        Raises:
-            ValueError: If a specified column is not found in the DataFrame.
-        """
-
         for old_name, new_name in column_mapping.items():
             if old_name not in self.df.columns:
                 raise ValueError(f"Column '{old_name}' not found in the DataFrame.")
-
         self.df = self.df.rename(columns=column_mapping)
         return self.df
-    
+
     def standardize_column_names(self) -> pd.DataFrame:
-        """
-        Standardize column names by making them lowercase and replacing spaces with underscores.
-        """
         self.df.columns = [col.lower().replace(" ", "_") for col in self.df.columns]
         return self.df
 
-
     def reorder_columns(self, columns: List[str]) -> pd.DataFrame:
-        """
-        Reorder columns in the DataFrame based on the specified order.
-        
-        Parameters:
-            columns (list): List of column names in the desired order.
-        
-        Returns:
-            pd.DataFrame: Updated DataFrame with reordered columns.
-
-        Raises:
-            ValueError: If a specified column is not found in the DataFrame.
-        """
         for column in columns:
             if column not in self.df.columns:
                 raise ValueError(f"Column name '{column}' not found in the DataFrame.")
         self.df = self.df[columns]
         return self.df
-    
-    def generate_report(self) -> str:
-        """
-        Generate a condensed report of changes made during data cleaning.
-        """
-        report = []
 
+    def generate_report(self) -> str:
+        report = []
         report.append("Null counts before cleaning:\n")
         report.append(str(self.report.get('null_counts_before', 'Not available')))
-
         report.append("\nNull counts after cleaning:\n")
         report.append(str(self.report.get('null_counts_after', 'Not available')))
-
         report.append("\nDuplicate counts before cleaning:\n")
         report.append(str(self.report.get('duplicate_count_before', 'Not available')))
-
         report.append("\nDuplicate counts after cleaning:\n")
         report.append(str(self.report.get('duplicate_count_after', 'Not available')))
-
         report.append("\nColumns dropped during cleaning:\n")
         report.append(str(self.report.get('dropped_columns', 'None')))
-
         report.append("\nData types changed:\n")
         report.append(str(self.report.get('changed_data_types', 'None')))
-
         report.append("\nMissing data handling:\n")
         report.append(str(self.report.get('missing_data_handling', 'None')))
-
         report.append("\nRows dropped due to outliers:\n")
         report.append(str(self.report.get('outlier_dropped_rows', 'None')))
-
+        report.append("\nRows dropped due to Z-score outliers:\n")
+        report.append(str(self.report.get('outlier_dropped_rows_zscore', 'None')))
         return "\n".join(report)
