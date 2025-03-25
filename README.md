@@ -83,6 +83,12 @@ Error reports (if any issues occur) will also be saved in data/reports/.
 
 Using etl_to db script:  Database with prepared data will be populated.
 
+ ![alt text](image-2.png)
+
+ ![alt text](image-3.png)
+
+ ![alt text](image-4.png)
+
 ## Logging
 
 The script logs important steps and errors using Python's logging module. Log messages include:
