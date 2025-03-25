@@ -107,7 +107,7 @@ def process_data(filename: str):
         change_log.append(f"Consistency before cleaning: {consistency_before}")
 
         # Step 3: Handle missing data (fill or drop)
-        df = scrubber.handle_missing_data(drop=False, fill_value=0)  # Example of filling missing data with 0
+        df = scrubber.handle_missing_data(drop=True, fill_value=0)  # Example of filling missing data with 0
         change_log.append("Filled missing data with 0.")
 
         # Step 4: Remove duplicate records

@@ -93,4 +93,3 @@ transaction_id,purchase_date,customer_id,product_id,store_id,campaign_id,sale_am
 641,2024-09-30,1010,103,402,3,45.52,20,PayPal,In Store
 642,2024-10-10,1002,101,402,0,5551.84,17,PayPal,Online
 643,2024-10-10,1010,104,402,0,301.7,100,PayPal,Phone
-644,2024-10-10,1010,104,402,0,305.0,100,0,Phone
