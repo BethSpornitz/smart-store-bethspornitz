@@ -53,7 +53,7 @@ py -m venv .venv
 
 ## Usage
 
-Run the script using:
+Run the script using:  
 ```shell
 python scripts/data_preparation/data_prep2.py
 
@@ -71,7 +71,7 @@ Run the script to create the database using:
 python scripts/etl_to_dw.py
 
 This will create the database using the prepared files
-'''
+```
 
 ## Output
 
