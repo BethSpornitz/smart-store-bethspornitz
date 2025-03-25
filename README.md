@@ -24,6 +24,9 @@ Requires installation of:
 pandas  
 matplotlib  
 loguru
+numpy
+scipy
+sqlite3
 
 ```shell
 
@@ -62,13 +65,22 @@ data/raw/products_data.csv
 data/raw/sales_data.csv
 ```
 
+Run the script to create the database using: 
+```shell
+python scripts/etl_to_dw.py
+
+This will create the database using the prepared files
+'''
+
 ## Output
 
-Cleaned files will be saved in data/cleaned/.
+Cleaned files will be saved in data/prepared/.
 
 Reports summarizing data cleaning steps will be saved in data/reports/.
 
 Error reports (if any issues occur) will also be saved in data/reports/.
+
+Using etl_to db script:  Database with prepared data will be populated.
 
 ## Logging
 
