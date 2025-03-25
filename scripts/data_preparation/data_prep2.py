@@ -133,9 +133,10 @@ def process_data(filename: str):
         change_log.append(f"Consistency after cleaning: {consistency_after}")
 
         # Step 7:  Generate cleaned file path by maintaining the same folder structure
-        prepared_file_path = os.path.join(
-            PREPARED_DATA_DIR, os.path.basename(filename)
-)
+        original_stem = Path(filename).stem
+        new_filename = f"prepared_{original_stem}.csv"
+        prepared_file_path = PREPARED_DATA_DIR / new_filename
+
         
         # Ensure the cleaned data directory exists
         os.makedirs(os.path.dirname(prepared_file_path), exist_ok=True)
