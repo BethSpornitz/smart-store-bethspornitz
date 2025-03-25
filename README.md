@@ -2,7 +2,7 @@
 
 ## Overview
 
-This script processes raw CSV data files by performing data cleaning operations such as standardizing column names, handling missing data, removing duplicate records, and generating reports on the cleaning process. The cleaned data is saved in a designated directory, and reports are generated to summarize changes made.
+This script processes raw CSV data files by performing data cleaning operations such as standardizing column names, handling missing data, removing duplicate records, and generating reports on the cleaning process. The cleaned data is saved in a designated directory, and reports are generated to summarize changes made.  These prepared files can then be loaded into a database for further analysis.
 
 ## Features
 
@@ -16,6 +16,7 @@ This script processes raw CSV data files by performing data cleaning operations 
 - Saves cleaned data into a specified folder
 - Generates and saves reports summarizing data cleaning steps
 - Logs errors and saves error reports if issues occur
+- Create database from prepared files
 
 
 ## Installation
