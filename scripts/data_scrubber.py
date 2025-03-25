@@ -24,30 +24,46 @@ class DataScrubber:
         self.df = df
         self.report = {}
 
-    def remove_outliers_iqr(self, column_name: str) -> pd.DataFrame:
-        self.df[column_name] = pd.to_numeric(self.df[column_name], errors='coerce')
+    def remove_outliers_iqr(self, column_name: str, change_log=None) -> pd.DataFrame:
+        if column_name not in self.df.columns:
+            if change_log is not None:
+                change_log.append(f"Column '{column_name}' not found for IQR outlier removal.")
+            return self.df
+
         Q1 = self.df[column_name].quantile(0.25)
         Q3 = self.df[column_name].quantile(0.75)
         IQR = Q3 - Q1
         lower_bound = Q1 - 1.5 * IQR
         upper_bound = Q3 + 1.5 * IQR
-        initial_row_count = len(self.df)
+
+        initial_count = len(self.df)
         self.df = self.df[(self.df[column_name] >= lower_bound) & (self.df[column_name] <= upper_bound)]
-        dropped_rows = initial_row_count - len(self.df)
-        self.report['outlier_dropped_rows'] = dropped_rows
+        removed = initial_count - len(self.df)
+
+        if removed > 0 and change_log is not None:
+            change_log.append(f"Removed {removed} outliers from column '{column_name}' using IQR method.")
+    
         return self.df
 
-    def remove_outliers_zscore(self, column_name: str, threshold: float = 3.0) -> pd.DataFrame:
+    def remove_outliers_zscore(self, column_name: str, threshold=3, change_log=None) -> pd.DataFrame:
         if column_name not in self.df.columns:
-            raise ValueError(f"Column '{column_name}' not found in the DataFrame.")
-        self.df[column_name] = pd.to_numeric(self.df[column_name], errors='coerce')
-        col_values = self.df[column_name].dropna()
-        z_scores = stats.zscore(col_values)
+            if change_log is not None:
+                change_log.append(f"Column '{column_name}' not found for Z-score outlier removal.")
+            return self.df
+
+        z_scores = stats.zscore(self.df[column_name].dropna())
         abs_z_scores = np.abs(z_scores)
-        filtered_indicess = col_values.index[abs_z_scores < threshold]
-        dropped_count = len(self.df) - len(filtered_indices)
-            # Filter the original dataframe using valid indices
-        self.df = self.df.loc[filtered_indices]
+        mask = abs_z_scores <= threshold
+
+    # Keep only rows that are not outliers
+        cleaned_df = self.df.loc[self.df[column_name].dropna().index[mask]]
+        removed = len(self.df) - len(cleaned_df)
+
+        if removed > 0 and change_log is not None:
+            change_log.append(f"Removed {removed} outliers from column '{column_name}' using Z-score method.")
+
+        self.df = cleaned_df
+        return self.df
 
 
     # Save to report

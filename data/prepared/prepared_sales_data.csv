@@ -1,5 +1,4 @@
 transaction_id,purchase_date,customer_id,product_id,store_id,campaign_id,sale_amount_usd,quantity_sold,payment_method,sales_channel
-550,2024-01-06,1008,102,404,0,39.1,20,Cash,In Store
 551,2024-01-06,1009,105,403,0,19.78,1,Credit Card,Online
 552,2024-01-16,1004,107,404,0,335.1,1,PayPal,Phone
 553,2024-01-16,1006,102,406,0,195.5,1,Cash,In Store

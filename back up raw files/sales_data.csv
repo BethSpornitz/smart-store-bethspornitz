@@ -1,5 +1,5 @@
 TransactionID,SaleDate,CustomerID,ProductID,StoreID,CampaignID,SaleAmount,QuantitySold,PaymentMethod,SalesChannel
-550,1/6/2024,1008,102,404,0,39.1,100000,Cash,In Store
+550,1/6/2024,1008,102,404,0,39.1,20,Cash,In Store
 551,1/6/2024,1009,105,403,0,19.78,1,Credit Card,Online
 552,1/16/2024,1004,107,404,0,335.1,1,PayPal,Phone
 553,1/16/2024,1006,102,406,0,195.5,1,Cash,In Store

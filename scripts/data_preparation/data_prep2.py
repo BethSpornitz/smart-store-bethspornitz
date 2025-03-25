@@ -115,16 +115,12 @@ def process_data(filename: str):
         change_log.append("Removed duplicate records.")
 
   # Step 5: Remove rows with outliers in 'Quantity_Sold'
-
   
-
-  
-        if 'Quantity_Sold' in df.columns:
-            df = scrubber.remove_outliers_zscore(column_name='Quantity_Sold')
-            change_log.append("Removed outliers from 'Quantity_Sold' using Z-score method.")
      # Handle outliers if applicable
-        if "QuantitySold" in df.columns:
-        	df = scrubber.remove_outliers_zscore(df, "QuantitySold", threshold=3, change_log=change_log)
+        if "quantity_sold" in df.columns:
+        	df = scrubber.remove_outliers_zscore("quantity_sold", threshold=3, change_log=change_log)
+
+        #df = scrubber.remove_outliers_iqr("quantity_sold", change_log=change_log)
 
 
         # Step 6: Perform final consistency check after cleaning

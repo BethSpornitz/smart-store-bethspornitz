@@ -12,6 +12,7 @@ sales_channel      0
 dtype: int64, 'duplicate_count': np.int64(1)}
 Filled missing data with 0.
 Removed duplicate records.
+Removed 1 outliers from column 'quantity_sold' using Z-score method.
 Consistency after cleaning: {'null_counts': transaction_id     0
 purchase_date      0
 customer_id        0
