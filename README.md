@@ -16,7 +16,7 @@ This script processes raw CSV data files by performing data cleaning operations 
 - Saves cleaned data into a specified folder
 - Generates and saves reports summarizing data cleaning steps
 - Logs errors and saves error reports if issues occur
-- Create database from prepared files
+- Creates database from prepared files
 
 
 ## Installation
