@@ -89,9 +89,9 @@ def load_data_to_db() -> None:
         delete_existing_records(cursor)
 
         # Load prepared data using pandas
-        customers_df = pd.read_csv(PREPARED_DATA_DIR.joinpath("customers_data.csv"))
-        products_df = pd.read_csv(PREPARED_DATA_DIR.joinpath("products_data.csv"))
-        sales_df = pd.read_csv(PREPARED_DATA_DIR.joinpath("sales_data.csv"))
+        customers_df = pd.read_csv(PREPARED_DATA_DIR.joinpath("prepared_customers_data.csv"))
+        products_df = pd.read_csv(PREPARED_DATA_DIR.joinpath("prepared_products_data.csv"))
+        sales_df = pd.read_csv(PREPARED_DATA_DIR.joinpath("prepared_sales_data.csv"))
 
         # Insert data into the database
         insert_customers(customers_df, cursor)
