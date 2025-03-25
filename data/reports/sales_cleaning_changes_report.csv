@@ -1,0 +1,4 @@
+Change Log
+Dropped 1 rows due to missing values.
+Dropped 1 duplicate rows.
+Dropped 1 outliers from column 'Quantity_Sold' using Z-score method.
