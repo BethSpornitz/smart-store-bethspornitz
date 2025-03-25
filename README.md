@@ -24,10 +24,10 @@ This script processes raw CSV data files by performing data cleaning operations 
 Requires installation of:  
 pandas  
 matplotlib  
-loguru
-numpy
-scipy
-sqlite3
+loguru  
+numpy  
+scipy  
+sqlite3  
 
 ```shell
 
