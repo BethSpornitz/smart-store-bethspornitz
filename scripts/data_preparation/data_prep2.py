@@ -120,9 +120,6 @@ def process_data(filename: str):
         if "quantity_sold" in df.columns:
         	df = scrubber.remove_outliers_zscore("quantity_sold", threshold=3, change_log=change_log)
 
-        #df = scrubber.remove_outliers_iqr("quantity_sold", change_log=change_log)
-
-
         # Step 6: Perform final consistency check after cleaning
         consistency_after = scrubber.check_data_consistency_after_cleaning()
         logger.info(f"Consistency check after cleaning: {consistency_after}")
