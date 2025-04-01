@@ -143,7 +143,7 @@ Enables users to filter all charts by product category.
 
 ![alt text](image-7.png)
 
-Matrix for Product vs Region
+Matrix for Product vs Regio
 Cross-tabulates total sales by product_name and customer_region.
 
 ![alt text](image-8.png)
