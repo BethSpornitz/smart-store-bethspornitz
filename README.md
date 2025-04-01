@@ -114,18 +114,19 @@ unittest
 ##  Visualization
 
 SQL Queries
+
 ```shell
 
-# SQL Queries and Reports
+SQL Queries and Reports
 
-### 🔍 Top Customers Query
-```sql
+Top Customers Query
+sql
 SELECT c.customer_name AS customer_name, SUM(s.sale_amount_usd) AS TotalSpent
 FROM sale s
 JOIN customer c ON s.customer_id = c.customer_id
 GROUP BY c.customer_name
 ORDER BY TotalSpent DESC;
-shell```
+```
 
 
 Top Customers Bar Chart
