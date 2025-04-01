@@ -149,6 +149,10 @@ Cross-tabulates total sales by product_name and customer_region.
 
 ![alt text](image-8.png)
 
+Power BI Model View
+
+![alt text](image-9.png)
+
 ## Git add and commi
 
 ```shell
