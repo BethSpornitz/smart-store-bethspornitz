@@ -148,7 +148,7 @@ Cross-tabulates total sales by product_name and customer_region.
 
 ![alt text](image-8.png)
 
-## Git add and commit
+## Git add and commi
 
 ```shell
 git add .
