@@ -111,7 +111,7 @@ logging
 
 unittest
 
-##  Visualization
+## Visualization
 
 SQL Queries
 
@@ -127,7 +127,6 @@ JOIN customer c ON s.customer_id = c.customer_id
 GROUP BY c.customer_name
 ORDER BY TotalSpent DESC;
 ```
-
 
 Top Customers Bar Chart
 Highlights the most valuable customers by total revenue.
@@ -152,6 +151,128 @@ Cross-tabulates total sales by product_name and customer_region.
 Power BI Model View
 
 ![alt text](image-9.png)
+
+## OLAP and Business Goals
+
+### Section 1. The Business Goal
+
+Business Goal: Identify which customer regions generate the highest total sales for each product category, month-by-month.
+
+Understanding which regions consistently perform best allows leadership to focus marketing efforts, tailor promotions, and optimize inventory distribution by region and category.
+
+Section 1. The Business Goal
+
+Business Goal: Identify which customer regions generate the highest total sales for each product category, month-by-month.
+
+Why it matters: Understanding which regions consistently perform best allows leadership to focus marketing efforts, tailor promotions, and optimize inventory distribution by region and category.
+
+### Section 2. Data Source
+
+Source: Tables in our SQLite database (smart_sales.db).
+
+Tables Used:
+
+customer – for region information (customer_region)
+
+product – for product category (product_category)
+
+sale – for sale amounts and purchase dates (sale_amount_usd, purchase_date)
+
+Columns:
+
+sale.purchase_date
+
+sale.sale_amount_usd
+
+customer.customer_region
+
+product.product_category
+
+Data was joined using foreign keys (customer_id and product_id) to perform analysis.
+
+### Section 3. Tools
+
+Python: Data processing, querying, and analysis
+
+SQLite: Local data storage and relational joins
+
+Pandas: Data aggregation and transformation
+
+Plotly & Dash: Interactive data visualizations and dashboards
+
+Jupyter Notebook: Workflow execution and documentation
+
+## Section 4. Workflow & Logic
+
+Data Preparation:
+
+Loaded the SQLite database and joined sale, product, and customer tables.
+
+Grouped data by customer_region, product_category, and sale_month.
+
+Aggregated monthly total_sales using SUM(sale_amount_usd).
+
+Dimensions:
+
+customer_region
+
+product_category
+
+sale_month
+
+Metrics:
+
+SUM(sale_amount_usd) as total_sales
+
+OLAP Operations:
+
+Slicing: Filter by product_category
+
+Dicing: Compare across region and month
+
+Drill-down: View trends from aggregated monthly totals
+
+## Section 5. Results
+
+Key Findings:
+
+The East region dominates in sales across all months, especially in Electronics, totaling over $58,000.
+
+The South region is the second-highest contributor, showing solid performance in both Electronics and Clothing.
+
+The West region performs moderately across all categories.
+
+The North region lags behind, with the lowest total sales.
+
+Visualizations Created:
+
+Interactive Line Chart: Monthly sales trends by region and product category (with dropdown filters)
+
+Interactive Bar Chart: Total sales by region and product category
+
+Both visualizations were implemented using Dash and embedded in the exported HTML report for grading.
+
+## Section 6. Suggested Business Action
+
+Invest more in marketing and product placement in the East and South regions, particularly for high-performing categories like Electronics.
+
+Consider regional promotions or campaigns in the North region to boost performance.
+
+Use monthly sales trends to plan inventory and staffing based on predictable peak months.
+
+## Section 7. Challenges
+
+I had issues with the interactive visualizations built with Plotly were not appearing in exported HTML.
+
+My solution was to Rebuild some visualizations using Dash, which shows correctly in HTML and maintains interactivity.
+
+I had an issue at the beginning where sale_month appeared duplicated in early line charts.
+
+My solution was to aggregate values by customer_region, product_category, and month to remove duplication.
+
+When creating some visuals in Dash, I had some greyed-out backgrounds.
+
+My solution was to pdate layout and styling in Dash for clear visuals and accessibility.
 
 ## Git add and commi
 
