@@ -160,12 +160,6 @@ Business Goal: Identify which customer regions generate the highest total sales 
 
 Understanding which regions consistently perform best allows leadership to focus marketing efforts, tailor promotions, and optimize inventory distribution by region and category.
 
-Section 1. The Business Goal
-
-Business Goal: Identify which customer regions generate the highest total sales for each product category, month-by-month.
-
-Why it matters: Understanding which regions consistently perform best allows leadership to focus marketing efforts, tailor promotions, and optimize inventory distribution by region and category.
-
 ### Section 2. Data Source
 
 Source: Tables in our SQLite database (smart_sales.db).
@@ -202,7 +196,7 @@ Plotly & Dash: Interactive data visualizations and dashboards
 
 Jupyter Notebook: Workflow execution and documentation
 
-## Section 4. Workflow & Logic
+### Section 4. Workflow & Logic
 
 Data Preparation:
 
@@ -232,7 +226,7 @@ Dicing: Compare across region and month
 
 Drill-down: View trends from aggregated monthly totals
 
-## Section 5. Results
+### Section 5. Results
 
 Key Findings:
 
@@ -252,7 +246,7 @@ Interactive Bar Chart: Total sales by region and product category
 
 Both visualizations were implemented using Dash and embedded in the exported HTML report for grading.
 
-## Section 6. Suggested Business Action
+### Section 6. Suggested Business Action
 
 Invest more in marketing and product placement in the East and South regions, particularly for high-performing categories like Electronics.
 
@@ -260,7 +254,7 @@ Consider regional promotions or campaigns in the North region to boost performan
 
 Use monthly sales trends to plan inventory and staffing based on predictable peak months.
 
-## Section 7. Challenges
+### Section 7. Challenges
 
 I had issues with the interactive visualizations built with Plotly were not appearing in exported HTML.
 
