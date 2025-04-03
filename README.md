@@ -160,6 +160,13 @@ Business Goal: Identify which customer regions generate the highest total sales 
 
 Understanding which regions consistently perform best allows leadership to focus marketing efforts, tailor promotions, and optimize inventory distribution by region and category.
 
+Descriptive dimensions: product category, region, month
+Numeric metric: total sales amount
+Aggregations: sum and average
+Slicing: by product category
+Dicing: by product and region
+Drilldown: from year to month
+
 ### Section 2. Data Source
 
 Source: Tables in our SQLite database (smart_sales.db).
@@ -182,7 +189,17 @@ customer.customer_region
 
 product.product_category
 
-Data was joined using foreign keys (customer_id and product_id) to perform analysis.
+Join data using foreign keys (customer_id and product_id) to perform analysis.
+
+Sort or filter to identify which regions are top-performing per category per month
+
+Output:
+
+A line chart to show monthly sales trends
+
+A bar chart to compare total sales by region and product category
+
+A summary table of sales totals by region and category
 
 ### Section 3. Tools
 
@@ -200,11 +217,11 @@ Jupyter Notebook: Workflow execution and documentation
 
 Data Preparation:
 
-Loaded the SQLite database and joined sale, product, and customer tables.
+Load the SQLite database and joined sale, product, and customer tables.
 
-Grouped data by customer_region, product_category, and sale_month.
+Group data by customer_region, product_category, and sale_month.
 
-Aggregated monthly total_sales using SUM(sale_amount_usd).
+Aggregate monthly total_sales using SUM(sale_amount_usd).
 
 Dimensions:
 
@@ -245,6 +262,8 @@ Interactive Line Chart: Monthly sales trends by region and product category (wit
 Interactive Bar Chart: Total sales by region and product category
 
 Both visualizations were implemented using Dash and embedded in the exported HTML report for grading.
+https://bethspornitz.github.io/smart-sales/dashboard.html
+
 
 ### Section 6. Suggested Business Action
 
@@ -268,7 +287,7 @@ When creating some visuals in Dash, I had some greyed-out backgrounds.
 
 My solution was to pdate layout and styling in Dash for clear visuals and accessibility.
 
-## Git add and commi
+## Git add and commit
 
 ```shell
 git add .
