@@ -264,6 +264,7 @@ Month with Highest Sales per Region
 ![alt text](image-11.png)
 
 Pivot Table
+
 ![alt text](image-10.png)
 
 Bar Plot: Total Sales by Region and Product Category
@@ -286,8 +287,6 @@ Interactive Faceted Line Chart: Monthly Sales by Product Category
 
 Interactive Line Chart: Monthly sales trends by region and product category (with dropdown filters)
 ![alt text](image-20.png)
-
-Interactive Bar Chart: Total sales by region and product category
 
 ### Section 6. Suggested Business Action
 
