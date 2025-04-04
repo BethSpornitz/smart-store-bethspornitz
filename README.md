@@ -26,6 +26,14 @@ loguru
 numpy  
 scipy  
 sqlite3
+dash
+plotly
+jupyter
+jupyter-dash
+ipykernel
+seaborn
+notebook
+
 
 ```shell
 
