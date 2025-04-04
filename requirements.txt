@@ -1,3 +1,13 @@
+dash
+plotly
+pandas
+jupyter
+jupyter-dash
+ipykernel
+matplotlib
+seaborn
+notebook
+
 # #updated
 #requirements.txt - list all the packages the project needs
 #
