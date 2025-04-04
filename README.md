@@ -257,13 +257,37 @@ The North region lags behind, with the lowest total sales.
 
 Visualizations Created:
 
+Top Region per Product Category
+![alt text](image-12.png)
+
+Month with Highest Sales per Region
+![alt text](image-11.png)
+
+Pivot Table
+![alt text](image-10.png)
+
+Bar Plot: Total Sales by Region and Product Category
+![alt text](image-14.png)
+
+Line Chart: Sales Trends by Month (Faceted by Region)
+![alt text](image-15.png)
+
+Heatmap: Region vs Product Category by Total Sales
+![alt text](image-16.png)
+
+Interactive Bar Chart: Total Sales by Region and Product Category
+![alt text](image-18.png)
+
+Interactive Line Chart: Monthly Sales Trend by Region
+![alt text](image-17.png)
+
+Interactive Faceted Line Chart: Monthly Sales by Product Category
+![alt text](image-19.png)
+
 Interactive Line Chart: Monthly sales trends by region and product category (with dropdown filters)
+![alt text](image-20.png)
 
 Interactive Bar Chart: Total sales by region and product category
-
-Both visualizations were implemented using Dash and embedded in the exported HTML report for grading.
-https://bethspornitz.github.io/smart-sales/dashboard.html
-
 
 ### Section 6. Suggested Business Action
 
