@@ -160,12 +160,12 @@ Business Goal: Identify which customer regions generate the highest total sales 
 
 Understanding which regions consistently perform best allows leadership to focus marketing efforts, tailor promotions, and optimize inventory distribution by region and category.
 
-Descriptive dimensions: product category, region, month
-Numeric metric: total sales amount
-Aggregations: sum and average
-Slicing: by product category
-Dicing: by product and region
-Drilldown: from year to month
+* Descriptive dimensions: product category, region, month
+* Numeric metric: total sales amount
+* Aggregations: sum and average
+* Slicing: by product category
+* Dicing: by product and region
+* Drilldown: from year to month
 
 ### Section 2. Data Source
 
@@ -173,21 +173,16 @@ Source: Tables in our SQLite database (smart_sales.db).
 
 Tables Used:
 
-customer – for region information (customer_region)
-
-product – for product category (product_category)
-
-sale – for sale amounts and purchase dates (sale_amount_usd, purchase_date)
+* customer – for region information (customer_region)
+* product – for product category (product_category)
+* sale – for sale amounts and purchase dates (sale_amount_usd, purchase_date)
 
 Columns:
 
-sale.purchase_date
-
-sale.sale_amount_usd
-
-customer.customer_region
-
-product.product_category
+* sale.purchase_date
+* sale.sale_amount_usd
+* customer.customer_region
+* product.product_category
 
 Join data using foreign keys (customer_id and product_id) to perform analysis.
 
@@ -195,65 +190,54 @@ Sort or filter to identify which regions are top-performing per category per mon
 
 Output:
 
-A line chart to show monthly sales trends
-
-A bar chart to compare total sales by region and product category
-
-A summary table of sales totals by region and category
+* A line chart to show monthly sales trends
+* A bar chart to compare total sales by region and product category
+* A summary table of sales totals by region and category
 
 ### Section 3. Tools
 
 Python: Data processing, querying, and analysis
 
-SQLite: Local data storage and relational joins
-
-Pandas: Data aggregation and transformation
-
-Plotly & Dash: Interactive data visualizations and dashboards
-
-Jupyter Notebook: Workflow execution and documentation
+* SQLite: Local data storage and relational joins
+* Pandas: Data aggregation and transformation
+* Plotly & Dash: Interactive data visualizations and dashboards
+* Jupyter Notebook: Workflow execution and documentation
 
 ### Section 4. Workflow & Logic
 
 Data Preparation:
 
-Load the SQLite database and joined sale, product, and customer tables.
-
-Group data by customer_region, product_category, and sale_month.
-
-Aggregate monthly total_sales using SUM(sale_amount_usd).
+* Load the SQLite database and joined sale, product, and customer tables.
+* Group data by customer_region, product_category, and sale_month.
+* Aggregate monthly total_sales using SUM(sale_amount_usd).
 
 Dimensions:
 
-customer_region
-
-product_category
-
-sale_month
+* customer_region
+* product_category
+* sale_month
 
 Metrics:
 
-SUM(sale_amount_usd) as total_sales
+* SUM(sale_amount_usd) as total_sales
 
 OLAP Operations:
 
-Slicing: Filter by product_category
-
-Dicing: Compare across region and month
-
-Drill-down: View trends from aggregated monthly totals
+* Slicing: Filter by product_category
+* Dicing: Compare across region and month
+* Drill-down: View trends from aggregated monthly totals
 
 ### Section 5. Results
 
 Key Findings:
 
-The East region dominates in sales across all months, especially in Electronics, totaling over $58,000.
+* The East region dominates in sales across all months, especially in Electronics, totaling over $58,000.
 
-The South region is the second-highest contributor, showing solid performance in both Electronics and Clothing.
+* The South region is the second-highest contributor, showing solid performance in both Electronics and Clothing.
 
-The West region performs moderately across all categories.
+* The West region performs moderately across all categories.
 
-The North region lags behind, with the lowest total sales.
+* The North region lags behind, with the lowest total sales.
 
 Visualizations Created:
 
@@ -290,11 +274,11 @@ Interactive Line Chart: Monthly sales trends by region and product category (wit
 
 ### Section 6. Suggested Business Action
 
-Invest more in marketing and product placement in the East and South regions, particularly for high-performing categories like Electronics.
+* Invest more in marketing and product placement in the East and South regions, particularly for high-performing categories like Electronics.
 
-Consider regional promotions or campaigns in the North region to boost performance.
+* Consider regional promotions or campaigns in the North region to boost performance.
 
-Use monthly sales trends to plan inventory and staffing based on predictable peak months.
+* Use monthly sales trends to plan inventory and staffing based on predictable peak months.
 
 ### Section 7. Challenges
 
